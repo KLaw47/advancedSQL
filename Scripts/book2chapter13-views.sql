@@ -1,0 +1,32 @@
+--CREATE VIEW employee_dealership_names AS
+--	SELECT
+--		e.first_name,
+--		e.last_name,
+--		d.business_name
+--	FROM employees e
+--	INNER JOIN dealershipemployees de ON e.employee_id = de.employee_id 
+--	INNER JOIN dealerships d ON d.dealership_id = de.dealership_id;
+--	
+--SELECT * FROM employee_dealership_names 
+
+--CREATE VIEW vehicle_info AS
+--	SELECT
+--		vt.body_type,
+--		vt.make,
+--		vt.model
+--	FROM vehicletypes vt;
+--	
+--SELECT
+--	*
+--FROM vehicle_info
+
+--CREATE VIEW employee_type_numbers AS
+--	SELECT
+--		et.employee_type_name,
+--		COUNT(e.employee_id) AS employee_count
+--	FROM employeetypes et
+--	LEFT JOIN employees e ON et.employee_type_id = e.employee_type_id 
+--	GROUP BY et.employee_type_name;
+--SELECT *
+--FROM employee_type_numbers;
+		

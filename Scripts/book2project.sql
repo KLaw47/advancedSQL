@@ -51,3 +51,68 @@ FROM (
 ) ranked_sales
 WHERE sales_rank = 1
 
+--CREATE VIEW InventoryCount AS 
+--SELECT
+--	vt.model,
+--	vt.make,
+--	vt.body_type,
+--	COUNT(*) AS stock
+--FROM vehicles v 
+--JOIN vehicletypes vt ON v.vehicle_type_id = vt.vehicle_type_id 
+--WHERE v.is_sold = FALSE 
+--GROUP BY vt.model, vt.make, vt.body_type;
+--
+--SELECT model, stock
+--FROM inventorycount 
+--ORDER BY stock DESC;
+--
+--SELECT make, model, stock
+--FROM inventorycount 
+--ORDER BY stock DESC;
+--
+--SELECT body_type, stock
+--FROM inventorycount 
+--ORDER BY stock DESC;
+--
+--SELECT * 
+--FROM inventorycount 
+-- putting COUNT in the view made the data less readable when queries were run, counting in each query leads to more readable data.
+
+create view VehiclesInStock as
+select
+	v.vehicle_id,
+	vt.body_type,
+	vt.make,
+	vt.model,
+	v.is_sold
+from vehicles v
+left join vehicletypes vt	
+	on v.vehicle_type_id = vt.vehicle_type_id
+where v.is_sold = false
+-- count of each model in stock
+select
+	distinct model,
+	COUNT(model) over (partition by model) as ModelCount
+from vehiclesinstock
+order by modelcount desc
+-- count of each make in stock
+select
+	distinct make,
+	COUNT(make) over (partition by make) as MakeCount
+from vehiclesinstock
+order by makecount desc
+-- count of each body type in stock
+select
+	distinct body_type,
+	COUNT(body_type) over (partition by body_type) as BodyTypeCount
+from vehiclesinstock
+order by bodytypecount DESC
+
+SELECT 
+	c.state,
+	ROUND(AVG(s.price), 2) AS average_purchase_price
+FROM sales s 
+JOIN customers c ON s.customer_id = c.customer_id 
+GROUP BY c.state 
+ORDER BY average_purchase_price DESC 
+LIMIT 5;
